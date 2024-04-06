@@ -1,19 +1,26 @@
-export type Expense = {
-    id: string
-    expenseName: string
-    amount: string
-    category: string
-    data: Value
-}
-
-export type DraftExpense = Omit<Expense, 'id'>
+import { ReactNode } from "react";
 
 type ValuePiece = Date | null;
 
 export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
+
+export type Expense = {
+    id: string
+    expenseName: string
+    amount: number
+    category: string
+    date: Value
+}
+
+export type DraftExpense = Omit<Expense, 'id'>
+
 export type Category = {
     id: string
     name: string
     icon: string
+}
+
+export type ErrorMessageProps = {
+    children: ReactNode
 }

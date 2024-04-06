@@ -23,7 +23,7 @@ export const BudgetForm = () => {
 
         <div className="flex flex-col space-y-5">
             <label className="text-3xl text-green-600 font-bold text-center uppercase" htmlFor="budget">Definir Presupuesto</label>
-            <input type="number" id="budget" value={budget} onChange={(e) => handleChange(e)}  className="w-full bg-white border border-gray-200 p-2 placeholder:text-green-600" placeholder="Define tu presupuesto" name="budget"/>
+            <input type="number" id="budget" value={budget} onChange={handleChange}  className="w-full bg-white border border-gray-200 p-2 placeholder:text-green-600" placeholder="Define tu presupuesto" name="budget"/>
         </div>
         <input disabled={isValid} type="submit" value='Definir Presupuesto'  className="bg-green-600 disabled:opacity-20 hover:bg-green-700 cursor-pointer w-full p-2 text-white font-black uppercase" />
 
