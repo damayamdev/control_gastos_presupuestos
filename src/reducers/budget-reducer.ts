@@ -1,6 +1,7 @@
 import { DraftExpense, Expense } from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { Category } from '../types/index';
+import { Reducer } from "react";
 
 /* Acciones */
 
@@ -21,7 +22,7 @@ export type BudgetState = {
   modal: boolean;
   expenses: Expense[];
   editingId: Expense["id"];
-  currentCategory: Category['id']
+  currentCategory: string
 };
 
 /* Estado inicial del estado*/
@@ -68,7 +69,7 @@ export const budgetReducer = (
     return {
       ...state,
       modal: !state.modal,
-      editingId: state.modal && "",
+      editingId: state.modal ? "" : state.editingId
     };
   }
 
@@ -115,10 +116,11 @@ export const budgetReducer = (
   if (action.type === "reset-app") {
     return {
       ...state,
-      budget: [],
+      budget: 0,
       modal: false,
       expenses: [],
       editingId: "",
+      currentCategory:""
     };
   }
 

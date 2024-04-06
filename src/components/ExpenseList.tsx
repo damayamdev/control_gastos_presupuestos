@@ -10,7 +10,6 @@ export const ExpenseList = () => {
 
     const filteredExpenses = state.currentCategory ? state.expenses.filter(expense => expense.category === state.currentCategory) : state.expenses
 
-    console.log(filteredExpenses)
     const isEmpty = useMemo(() => filteredExpenses.length === 0, [filteredExpenses])
 
   return (
