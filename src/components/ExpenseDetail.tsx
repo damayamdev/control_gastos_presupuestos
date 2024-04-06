@@ -26,7 +26,7 @@ export const ExpenseDetail = ({ expense }: ExpenseDetailProps) => {
 
   const leadingActions = () => (
     <LeadingActions>
-        <SwipeAction onClick={() => {}}>
+        <SwipeAction onClick={() => dispatch({type:"get-expense-by-id", payload:{id: expense.id}})} >
             Actualizar
         </SwipeAction>
     </LeadingActions>
@@ -48,15 +48,15 @@ export const ExpenseDetail = ({ expense }: ExpenseDetailProps) => {
             <img
               src={`/icono_${categoryInfo.icon}.svg`}
               alt="icono gasto"
-              className="w-20"
+              className="w-20 select-none"
             />
           </div>
           <div className="flex-1 space-y-2">
-            <p className="text-sm font-bold uppercase text-slate-500">
+            <p className="text-sm font-bold uppercase text-slate-500 select-none">
               {categoryInfo.name}
             </p>
-            <p>{expense.expenseName}</p>
-            <p className="text-slate-600 text-sm">
+            <p className="select-none">{expense.expenseName}</p>
+            <p className="text-slate-600 text-sm select-none">
               {formatDate(expense.date!.toString())}
             </p>
           </div>

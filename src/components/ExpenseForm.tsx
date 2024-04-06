@@ -3,7 +3,7 @@ import type { DraftExpense, Value } from "../types";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { ErrorMessage } from "./ErrorMessage";
 import { useBudget } from "../hooks/useBudget";
 
@@ -15,7 +15,16 @@ function ExpenseForm() {
     category: "",
     date: new Date(),
   });
-  const {dispatch} = useBudget()
+  const { state, dispatch } = useBudget();
+
+  useEffect(() => {
+    if (state.editingId) {
+      const editingExpense = state.expenses.filter(
+        (currentExpense) => currentExpense.id === state.editingId
+      )[0];
+      setExpense(editingExpense);
+    }
+  }, [state.editingId]);
 
   const handleChangeDate = (value: Value) => {
     setExpense({
@@ -42,8 +51,12 @@ function ExpenseForm() {
       return;
     }
 
-    dispatch({type:'add-expense', payload:{expense: expense}})
-    
+    if (state.editingId) {
+      dispatch({ type: "update-expense", payload: { expense: {id: state.editingId, ...expense} } });
+    } else {
+      dispatch({ type: "add-expense", payload: { expense: expense } });
+    }
+
     // Reset the form
     setError("");
     setExpense({
@@ -51,13 +64,13 @@ function ExpenseForm() {
       expenseName: "",
       category: "",
       date: new Date(),
-    })
+    });
   };
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
       <legend className="uppercase text-center text-2xl font-black border-b-4 border-green-500 py-2">
-        Nuevo Gasto
+        {state.editingId ? 'Guardar Cambios' : 'Nuevo Gasto'}
       </legend>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -121,7 +134,7 @@ function ExpenseForm() {
       </div>
       <input
         type="submit"
-        value="Registar Gasto"
+        value={state.editingId ? "Guardar Cambios" : "Registar Gasto"}
         className="bg-green-600 cursor-pointer w-full p-2 text-white uppercase font-bold rounded-lg"
       />
     </form>

@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(state.expenses));
-    localStorage.setItem("budget", JSON.stringify(state.budget))
+    localStorage.setItem("budget", state.budget.toString())
   }, [state.expenses, state.budget]);
 
   return (
