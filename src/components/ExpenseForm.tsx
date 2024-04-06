@@ -9,13 +9,14 @@ import { useBudget } from "../hooks/useBudget";
 
 function ExpenseForm() {
   const [error, setError] = useState("");
+  const [previousAmout, setPreviousAmout] = useState(0)
   const [expense, setExpense] = useState<DraftExpense>({
     amount: 0,
     expenseName: "",
     category: "",
     date: new Date(),
   });
-  const { state, dispatch } = useBudget();
+  const { state, dispatch, remainingBudget } = useBudget();
 
   useEffect(() => {
     if (state.editingId) {
@@ -23,6 +24,7 @@ function ExpenseForm() {
         (currentExpense) => currentExpense.id === state.editingId
       )[0];
       setExpense(editingExpense);
+      setPreviousAmout(editingExpense.amount);
     }
   }, [state.editingId]);
 
@@ -51,6 +53,11 @@ function ExpenseForm() {
       return;
     }
 
+    if ((expense.amount - previousAmout) > remainingBudget) {
+      setError("Ese gasto se sale del presupuesto");
+      return;
+    }
+
     if (state.editingId) {
       dispatch({ type: "update-expense", payload: { expense: {id: state.editingId, ...expense} } });
     } else {
@@ -65,6 +72,7 @@ function ExpenseForm() {
       category: "",
       date: new Date(),
     });
+    setPreviousAmout(0)
   };
 
   return (
